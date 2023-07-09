@@ -2,6 +2,9 @@
 using Microsoft.Extensions.Configuration;
 namespace buzzfeed_solo;
 
+//these below classes are from the tutorial example link in readme
+//we only need to use one key in the settings json to store our db creds so will need to remove these later.
+
 public sealed class Settings
 {
     public required string KeyOne { get; set; } //had to change this to string from int
@@ -13,11 +16,13 @@ public sealed class NestedSettings
 {
     public required string Message { get; set; } = null!;
 }
+
 class Program
 {
     static void Main(string[] args)
     {
         //step 1: connect to the remote database
+
         ////make sure to de-couple the remote server credentials from this code base using a seperate configuration file to store creds.
 
         //build a configuration object
@@ -26,6 +31,9 @@ class Program
         .Build();
 
         // Get values from the config given their key and their target type.
+
+        //file path .../bin/debug/net7.0/dbcredentials.json
+
         Settings? settings = config.GetRequiredSection("Settings").Get<Settings>();
 
         //test if json config file is being loaded and if fake connection string can be printed
@@ -34,6 +42,7 @@ class Program
         Console.WriteLine($"{settings?.KeyOne}");
         Console.ReadLine();
 
+        //the fake string from the separate json file is being loaded correctly so next step is to see if the json file is being ignored correctly in git ignore so it doesnt end up on repo.
 
         //step 2: prompt user for unique user ID to store into Users table to allow for progress and result saving
         //step 3: show user list of available quizzes to take from Quizzes table
