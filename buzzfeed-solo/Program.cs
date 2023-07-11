@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlClient;
+using System.Xml.Linq;
 using Microsoft.Extensions.Configuration;
 namespace buzzfeed_solo;
 
@@ -33,7 +34,39 @@ class Program
 
         //the fake string from the separate json file is being loaded correctly so next step is to see if the json file is being ignored correctly in git ignore so it doesnt end up on repo.
 
-        //step 2: prompt user for unique user ID to store into Users table to allow for progress and result saving
+        //step 2: prompt user for name, then retrieve a unique userID so we can save scores and results to the current user
+        Console.WriteLine("what is your name?");
+        string name = Console.ReadLine();
+        Console.WriteLine($"your name is {name}");
+
+        //establish sql conenction
+        SqlConnection connection = new SqlConnection(@$"{settings?.ConnectionString}");
+
+        connection.Open();//open connection
+
+        string sql = "";
+        sql = $"INSERT INTO Users (Name) VALUES ('{name}');";
+
+        //write user input into User's table
+        SqlCommand command = new SqlCommand(sql, connection);
+        command.ExecuteNonQuery();
+        connection.Close();
+
+        //test to see if user input (name) was saved into database
+
+        connection.Open();//open connection
+        sql = "SELECT * FROM Users;";
+        SqlCommand command2 = new SqlCommand(sql, connection);
+
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            Console.WriteLine($"{reader["Name"]})");
+        }
+        Console.ReadLine();
+        reader.Close();
+        connection.Close();//close connection
+
         //step 3: show user list of available quizzes to take from Quizzes table
         //step 4: ask user questions from selected quiz
         //step 5: score results (column=ResultID in UserResultScores table has the most tallies)
