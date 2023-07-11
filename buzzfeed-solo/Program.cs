@@ -34,40 +34,67 @@ class Program
 
         //the fake string from the separate json file is being loaded correctly so next step is to see if the json file is being ignored correctly in git ignore so it doesnt end up on repo.
 
-        //step 2: prompt user for name, then retrieve a unique userID so we can save scores and results to the current user
-        Console.WriteLine("what is your name?");
-        string name = Console.ReadLine();
-        Console.WriteLine($"your name is {name}");
+        ////step 2: prompt user for name, then retrieve a unique userID so we can save scores and results to the current user
+        //Console.WriteLine("what is your name?");
+        //string name = Console.ReadLine();
+        //Console.WriteLine($"your name is {name}");
 
-        //establish sql conenction
-        SqlConnection connection = new SqlConnection(@$"{settings?.ConnectionString}");
+        //CONNECTION BLOCK
+        SqlConnection connection = new
+            SqlConnection(@$"{settings?.ConnectionString}");
 
-        connection.Open();//open connection
+        //connection.Open();//open connection
 
-        string sql = "";
-        sql = $"INSERT INTO Users (Name) VALUES ('{name}');";
+        //string sql = "";
+        //sql = $"INSERT INTO Users (Name) VALUES ('{name}');";
 
-        //write user input into User's table
-        SqlCommand command = new SqlCommand(sql, connection);
-        command.ExecuteNonQuery();
-        connection.Close();
+        ////write user input into User's table
+        //SqlCommand command = new SqlCommand(sql, connection);
+        //command.ExecuteNonQuery();
+        //connection.Close();
 
-        //test to see if user input (name) was saved into database
+        ////test to see if user input (name) was saved into database
 
-        connection.Open();//open connection
-        sql = "SELECT * FROM Users;";
-        SqlCommand command2 = new SqlCommand(sql, connection);
+        //connection.Open();//open connection
+        //sql = "SELECT * FROM Users;";
+        //SqlCommand command2 = new SqlCommand(sql, connection);
 
-        SqlDataReader reader = command.ExecuteReader();
-        while (reader.Read())
-        {
-            Console.WriteLine($"{reader["Name"]})");
-        }
-        Console.ReadLine();
-        reader.Close();
-        connection.Close();//close connection
+        //SqlDataReader reader = command.ExecuteReader();
+        //while (reader.Read())
+        //{
+        //    Console.WriteLine($"{reader["Name"]})");
+        //}
+        //Console.ReadLine();
+        //reader.Close();
+        //connection.Close();//close connection
+
+
+        //step 2 does not work. Maybe the server connection string isn't being passed correctly on line 43.
+        ////will continue with reading already saved quizzes to test the connection string
 
         //step 3: show user list of available quizzes to take from Quizzes table
+        //Start Quiz
+
+        connection.Open();
+        SqlCommand command = new SqlCommand("SELECT * FROM Quizzes;", connection);
+
+        //Step 2: Show the user a list of available quizes they can take
+        SqlDataReader reader = command.ExecuteReader();
+
+        while (reader.Read())
+        {
+            Console.Write(reader["QuizId"] + ": ");
+            Console.WriteLine(reader["QuizTitle"]);
+        }
+
+        Console.ReadLine();
+        reader.Close();
+        connection.Close();
+
+
+
+
+
         //step 4: ask user questions from selected quiz
         //step 5: score results (column=ResultID in UserResultScores table has the most tallies)
         //step 6: take all the scoring data stored in the UserResultScores Table and match to Results Title and quiz ID
