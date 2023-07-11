@@ -32,64 +32,66 @@ class Program
         Console.WriteLine($"{settings?.ConnectionString}");
         Console.ReadLine();
 
-        //the fake string from the separate json file is being loaded correctly so next step is to see if the json file is being ignored correctly in git ignore so it doesnt end up on repo.
-
-        ////step 2: prompt user for name, then retrieve a unique userID so we can save scores and results to the current user
-        //Console.WriteLine("what is your name?");
-        //string name = Console.ReadLine();
-        //Console.WriteLine($"your name is {name}");
-
         //CONNECTION BLOCK
         SqlConnection connection = new
             SqlConnection(@$"{settings?.ConnectionString}");
 
-        //connection.Open();//open connection
+        //the fake string from the separate json file is being loaded correctly so next step is to see if the json file is being ignored correctly in git ignore so it doesnt end up on repo.
 
-        //string sql = "";
-        //sql = $"INSERT INTO Users (Name) VALUES ('{name}');";
+        //step 2: prompt user for name, then retrieve a unique userID so we can save scores and results to the current user
+        Console.WriteLine("what is your name?");
+        string name = Console.ReadLine();
+        Console.WriteLine($"your name is {name}");
 
-        ////write user input into User's table
-        //SqlCommand command = new SqlCommand(sql, connection);
-        //command.ExecuteNonQuery();
-        //connection.Close();
+        connection.Open();//open connection
 
-        ////test to see if user input (name) was saved into database
+        string sql = "";
+        sql = $"INSERT INTO Users (Name) VALUES ('{name}');";
 
-        //connection.Open();//open connection
-        //sql = "SELECT * FROM Users;";
-        //SqlCommand command2 = new SqlCommand(sql, connection);
+        //write user input into User's table
+        SqlCommand command = new SqlCommand(sql, connection);
+        command.ExecuteNonQuery();
+        connection.Close();
 
-        //SqlDataReader reader = command.ExecuteReader();
-        //while (reader.Read())
-        //{
-        //    Console.WriteLine($"{reader["Name"]})");
-        //}
-        //Console.ReadLine();
-        //reader.Close();
-        //connection.Close();//close connection
+        //test to see if user input (name) was saved into database
+
+        connection.Open();//open connection
+
+        sql = "SELECT * FROM Users;";
+        command = new SqlCommand(sql, connection);
+
+        SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            Console.WriteLine($"{reader["Name"]})");
+        }
+
+        Console.ReadLine();
+        reader.Close();
+        connection.Close();//close connection
 
 
-        //step 2 does not work. Maybe the server connection string isn't being passed correctly on line 43.
+        //step 2 does not work.Maybe the server connection string isn't being passed correctly on line 43.
         ////will continue with reading already saved quizzes to test the connection string
 
         //step 3: show user list of available quizzes to take from Quizzes table
         //Start Quiz
 
-        connection.Open();
-        SqlCommand command = new SqlCommand("SELECT * FROM Quizzes;", connection);
+        //connection.Open();
+        //SqlCommand command = new SqlCommand("SELECT * FROM Quizzes;", connection);
 
-        //Step 2: Show the user a list of available quizes they can take
-        SqlDataReader reader = command.ExecuteReader();
+        ////Step 2: Show the user a list of available quizes they can take
+        //SqlDataReader reader = command.ExecuteReader();
 
-        while (reader.Read())
-        {
-            Console.Write(reader["QuizId"] + ": ");
-            Console.WriteLine(reader["QuizTitle"]);
-        }
+        //while (reader.Read())
+        //{
+        //    Console.Write(reader["QuizId"] + ": ");
+        //    Console.WriteLine(reader["QuizTitle"]);
+        //}
 
-        Console.ReadLine();
-        reader.Close();
-        connection.Close();
+        //Console.ReadLine();
+        //reader.Close();
+        //connection.Close();
 
 
 
