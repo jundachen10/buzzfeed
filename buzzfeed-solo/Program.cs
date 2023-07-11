@@ -5,16 +5,9 @@ namespace buzzfeed_solo;
 //these below classes are from the tutorial example link in readme
 //we only need to use one key in the settings json to store our db creds so will need to remove these later.
 
-public sealed class Settings
+public sealed class Settings //sealed so can't be inherited, and other cla
 {
-    public required string KeyOne { get; set; } //had to change this to string from int
-    public required bool KeyTwo { get; set; }
-    public required NestedSettings KeyThree { get; set; } = null!;
-}
-
-public sealed class NestedSettings
-{
-    public required string Message { get; set; } = null!;
+    public string ConnectionString { get; set; } //had to change this to string from int
 }
 
 class Program
@@ -27,19 +20,15 @@ class Program
 
         //build a configuration object
         IConfigurationRoot config = new ConfigurationBuilder()
-        .AddJsonFile("dbcredentials.json")
+        .AddJsonFile("dbcredentials.json")//file path .../bin/debug/net7.0/dbcredentials.json
         .Build();
 
-        // Get values from the config given their key and their target type.
-
-        //file path .../bin/debug/net7.0/dbcredentials.json
+        //Get values from the config given their key and their target type.
 
         Settings? settings = config.GetRequiredSection("Settings").Get<Settings>();
 
         //test if json config file is being loaded and if fake connection string can be printed
-
-        Console.WriteLine("hello world");
-        Console.WriteLine($"{settings?.KeyOne}");
+        Console.WriteLine($"{settings?.ConnectionString}");
         Console.ReadLine();
 
         //the fake string from the separate json file is being loaded correctly so next step is to see if the json file is being ignored correctly in git ignore so it doesnt end up on repo.
