@@ -34,7 +34,7 @@ class Program
 
         //CONNECTION BLOCK using the config file loaded above to pass the connection string.
         SqlConnection connection = new
-            SqlConnection(@$"{settings?.ConnectionString}");
+            SqlConnection($"{settings?.ConnectionString}");//typo: removed @ because we are already using string interpolation.
 
         //NOTE: the fake string from the separate json file is being loaded correctly and the json file is being ignored correctly in git ignore so it doesnt end up on repo.
 
@@ -67,7 +67,7 @@ class Program
         SqlDataReader reader = command.ExecuteReader();
         while (reader.Read())
         {
-            Console.WriteLine($"{reader["Name"]})");
+            Console.WriteLine($"{reader["Name"]}");// typo: parenthesis removed after {reader["Name"]}.
         }
 
         Console.ReadLine();
@@ -98,7 +98,7 @@ class Program
 
         //step 4: have user be able to select a quiz to take by entering in the QuizId on line 90.
 
-        //step 5: print out questions from the quiz that was selected by QuizId on line 90. The questions are located in the Questions table in the Title column. Questions (Title cloumn) are matched to quizses by QuizId column.
+        //step 5: print out questions from the quiz that was selected by QuizId on line 90. The questions are located in the Questions table in the Title column. Questions (Title column) are matched to quizzes by QuizId column.
 
         //step 6: also print out the possible answer choices for each question located in the Answers table. Answers matched to questions by QuestionId column.
 
